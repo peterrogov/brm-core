@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: brm_core_postgres
+    image: postgres
+    volumes:
+      - ./local/pg-data:/var/lib/postgresql/data
+    ports:
+      - 55355:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: postgres
+      POSTGRES_DB: humanitech-brm
+    networks:
+      - brm-network 
+
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - 55356:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@example.com # Change this as needed
+      PGADMIN_DEFAULT_PASSWORD: password # Change this as needed
+    depends_on:
+      - db      
+    networks:
+      - brm-network              
+
+networks:
+  brm-network:
+    driver: bridge
