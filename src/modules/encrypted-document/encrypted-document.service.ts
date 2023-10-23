@@ -86,6 +86,8 @@ export class EncryptedDocumentService {
     async getAll(): Promise<any> {
         const allDocuments = await this.documents.find();
         const result: (Omit<EncryptedDocument, "payload"> & { payload: Payload })[] = [];
+        // ignore decryptTime and all logic related to it. this is debug to measure performance.
+        // is not intended to remain in production
         let decryptTime = 0;
         for (const doc of allDocuments) {
             let t = process.hrtime.bigint();
